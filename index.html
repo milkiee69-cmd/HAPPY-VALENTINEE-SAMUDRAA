@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Wonderland for Mumudd 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --pink-soft: #ffcad4;
+            --pink-bright: #ff8fa3;
+            --peach: #fbc4ab;
+            --cream: #fff9f0;
+            --purple-soft: #cdb4db;
+            --rose: #e5989b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream);
+            overflow-x: hidden;
+            margin: 0;
+            color: #4a4a4a;
+            touch-action: manipulation;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' style='font-size:16px'><text y='18'>💖</text></svg>"), auto;
+        }
+
+        .font-pacifico { font-family: 'Pacifico', cursive; }
+        .font-baloo { font-family: 'Baloo 2', cursive; }
+
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: var(--pink-bright);
+            opacity: 0.6;
+            animation: float 6s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .btn-bounce {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: linear-gradient(135deg, #ff8fa3, #ff4d6d);
+        }
+        .btn-bounce:active { transform: scale(0.9); }
+        .btn-bounce:hover { transform: scale(1.08); filter: brightness(1.1); }
+
+        .kawaii-sticker {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.1));
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @media (min-width: 768px) {
+            .kawaii-sticker { width: 120px; height: 120px; }
+        }
+        .kawaii-sticker:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        #game-canvas {
+            background: linear-gradient(to bottom, #87ceeb, #e0f2fe);
+            border: 8px solid white;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(255, 143, 163, 0.15);
+            max-width: 100%;
+            touch-action: none;
+        }
+
+        .hidden { display: none; }
+
+        .fade-in { animation: fadeIn 1s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .floating-container {
+            animation: bobbing 3s ease-in-out infinite;
+        }
+        @keyframes bobbing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .cat-tag {
+            background: white;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-top: 10px;
+            z-index: 10;
+            border: 2px solid transparent;
+            white-space: nowrap;
+        }
+        
+        .tag-moli { border-color: #fb923c; color: #ea580c; }
+        .tag-nyunyud { border-color: #8b5e3c; color: #5d4037; }
+        .tag-munyud { border-color: #c084fc; color: #7e22ce; }
+
+        .cloud-decoration {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+            z-index: -1;
+            animation: moveClouds 20s linear infinite;
+        }
+        @keyframes moveClouds {
+            from { left: -150px; }
+            to { left: 100vw; }
+        }
+    </style>
+</head>
+<body onload="startEverything()">
+
+    <div class="heart-bg" id="heart-container"></div>
+    
+    <div class="cloud-decoration w-32 h-10 top-20" style="animation-delay: 0s"></div>
+    <div class="cloud-decoration w-24 h-8 top-60" style="animation-delay: -5s"></div>
+
+    <!-- Halaman Utama -->
+    <section id="landing-page" class="min-h-screen flex flex-col items-center py-12 px-6 text-center fade-in">
+        <header class="mb-12 floating-container">
+            <h1 class="font-pacifico text-4xl md:text-5xl text-[#ff4d6d] drop-shadow-sm mb-12 select-none">Happy Valentine’s Day Mumudd!! 💖</h1>
+            
+            <div class="flex flex-wrap justify-center gap-6 md:gap-12 mb-6">
+                <!-- MOLI -->
+                <div class="flex flex-col items-center">
+                    <div class="kawaii-sticker">
+                        <svg class="w-full h-full" viewBox="0 0 200 200">
+                            <path d="M50 60 L30 10 L80 40 Z" fill="#fb923c" stroke="#ea580c" stroke-width="4"/>
+                            <path d="M150 60 L170 10 L120 40 Z" fill="#fb923c" stroke="#ea580c" stroke-width="4"/>
+                            <circle cx="100" cy="100" r="70" fill="#fdba74" stroke="#ea580c" stroke-width="5"/>
+                            <circle cx="75" cy="95" r="8" fill="#333"/><circle cx="125" cy="95" r="8" fill="#333"/>
+                            <path d="M90 120 Q100 130 110 120" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="cat-tag tag-moli font-baloo">Moli</div>
+                </div>
+                <!-- NYUNYUD -->
+                <div class="flex flex-col items-center">
+                    <div class="kawaii-sticker">
+                        <svg class="w-full h-full" viewBox="0 0 200 200">
+                            <path d="M50 60 L30 10 L80 40 Z" fill="#8b5e3c" stroke="#5d4037" stroke-width="4"/>
+                            <path d="M150 60 L170 10 L120 40 Z" fill="#8b5e3c" stroke="#5d4037" stroke-width="4"/>
+                            <circle cx="100" cy="100" r="70" fill="#a1887f" stroke="#5d4037" stroke-width="5"/>
+                            <circle cx="75" cy="95" r="8" fill="#333"/><circle cx="125" cy="95" r="8" fill="#333"/>
+                            <path d="M90 120 Q100 130 110 120" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="cat-tag tag-nyunyud font-baloo">Nyunyud</div>
+                </div>
+                <!-- MUNYUD -->
+                <div class="flex flex-col items-center">
+                    <div class="kawaii-sticker">
+                        <svg class="w-full h-full" viewBox="0 0 200 200">
+                            <path d="M50 60 L30 10 L80 40 Z" fill="#c084fc" stroke="#7e22ce" stroke-width="4"/>
+                            <path d="M150 60 L170 10 L120 40 Z" fill="#c084fc" stroke="#7e22ce" stroke-width="4"/>
+                            <circle cx="100" cy="100" r="70" fill="#e9d5ff" stroke="#7e22ce" stroke-width="5"/>
+                            <circle cx="75" cy="95" r="8" fill="#333"/><circle cx="125" cy="95" r="8" fill="#333"/>
+                            <path d="M90 120 Q100 130 110 120" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="cat-tag tag-munyud font-baloo">Munyud</div>
+                </div>
+            </div>
+            
+            <p class="font-baloo font-bold text-lg text-[#b298dc] mt-12 px-4">Terima kasih sudah menjadi bagian dari cerita indah ini. ✨</p>
+        </header>
+
+        <!-- Bagian What Makes You Special -->
+        <div class="max-w-md w-full bg-white/60 backdrop-blur-md rounded-[40px] p-8 mb-10 shadow-sm border border-white/80 text-center">
+            <h3 class="font-pacifico text-2xl text-[#ff4d6d] mb-6">What Makes You Special?</h3>
+            <div class="space-y-6 text-left font-baloo text-gray-600">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-orange-100 rounded-full text-xl">✨</div>
+                    <p class="text-sm leading-relaxed">Cara kamu liat dunia tuh bikin aku jadi lebih terbuka tentang semua yang ada di dunia.</p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-stone-100 rounded-full text-xl">🌙</div>
+                    <p class="text-sm leading-relaxed">Dengan adanya kamu jadi sebuah pengingat kalo kebaikan kecil itu bisa buat hari hari lebih berarti.</p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-full text-xl">🌿</div>
+                    <p class="text-sm leading-relaxed">Kamu spesial karna itu kamu, bukan karna fisikmu ataupun sifatmu. Terimakasih sudah ada disini mumudku, ahaha.</p>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="showGame()" class="btn-bounce text-white font-baloo font-extrabold text-xl px-14 py-5 rounded-full shadow-lg mb-12">
+            Mulai Petualangan! 🎈
+        </button>
+    </section>
+
+    <!-- Halaman Game (Love Jumper) -->
+    <section id="game-page" class="min-h-screen hidden flex flex-col items-center justify-center p-4">
+        <div class="bg-white/95 backdrop-blur-md p-6 rounded-[50px] shadow-2xl w-full max-w-md text-center border-b-[10px] border-pink-200">
+            <h2 class="font-pacifico text-2xl text-[#ff4d6d] mb-2">Love Jumper! ☁️</h2>
+            <p class="mb-4 font-baloo text-gray-500 text-sm">Lompat ke atas awan sampai skor 2000! 🚀</p>
+            
+            <div class="relative inline-block overflow-hidden rounded-[30px] border-4 border-white shadow-inner">
+                <canvas id="game-canvas" width="320" height="480"></canvas>
+                <div id="score-display" class="absolute top-4 left-4 font-baloo font-black text-pink-500 text-2xl drop-shadow-md">✨ 0</div>
+            </div>
+
+            <p class="mt-4 font-baloo text-xs text-gray-400">Gunakan Mouse atau Geser Layar untuk bergerak</p>
+            <button onclick="backToHome()" class="mt-2 text-xs font-bold underline text-gray-400 font-baloo">Kembali</button>
+        </div>
+    </section>
+
+    <!-- Modal Menang -->
+    <div id="win-modal" class="fixed inset-0 bg-pink-100/90 backdrop-blur-md hidden flex items-center justify-center p-6 z-50">
+        <div class="bg-white rounded-[50px] p-10 max-w-sm w-full text-center shadow-2xl border-4 border-pink-300">
+            <div class="text-6xl mb-4">🏆</div>
+            <h3 class="font-pacifico text-3xl text-[#ff4d6d] mb-4">Hebat Banget!</h3>
+            <p class="mb-8 font-baloo font-bold text-gray-500">Kamu berhasil melewati tantangan awan! ☁️💖</p>
+            <button onclick="showMessagePage()" class="btn-bounce text-white px-10 py-5 rounded-full font-black text-xl w-full shadow-lg font-baloo">Buka Kejutan! 🎁</button>
+        </div>
+    </div>
+
+    <!-- Halaman Pesan -->
+    <section id="message-page" class="min-h-screen hidden flex flex-col items-center justify-center p-6 text-center">
+        <div class="bg-white/95 p-8 md:p-12 rounded-[50px] shadow-2xl max-w-xl w-full relative border-t-[10px] border-pink-300">
+            <div class="absolute -top-10 left-1/2 -translate-x-1/2 text-6xl">💌</div>
+            <h2 class="font-pacifico text-2xl text-[#ff4d6d] mb-6">Pesan Khusus Untuk Mumudd..</h2>
+            
+            <div id="typing-container" class="font-baloo font-bold text-md md:text-lg leading-relaxed text-gray-600 min-h-[300px] p-6 text-left bg-[#fffcf5] rounded-[30px] border-2 border-dashed border-pink-100">
+                <!-- Teks diketik otomatis -->
+            </div>
+
+            <button onclick="backToHome()" class="mt-8 text-pink-400 font-bold text-sm hover:scale-110 transition-transform flex items-center gap-2 mx-auto font-baloo">
+                <span>🧸</span> Main lagi yuk?
+            </button>
+        </div>
+    </section>
+
+    <script>
+        function startEverything() {
+            setInterval(createHearts, 500);
+        }
+
+        function createHearts() {
+            const container = document.getElementById('heart-container');
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = ['🍓','🍦','🍰','⭐','🍪','🍩','🍫'][Math.floor(Math.random()*7)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 15 + 15 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        // --- LOGIKA GAME (LOVE JUMPER) ---
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        let gameActive = false;
+        let score = 0;
+        let targetScore = 2000;
+        
+        let player = {
+            x: canvas.width / 2,
+            y: canvas.height - 100,
+            width: 40,
+            height: 40,
+            vy: 0,
+            jumpStrength: -10,
+            gravity: 0.35,
+            icon: '🐈'
+        };
+
+        let platforms = [];
+        const platformCount = 7;
+        const characters = ['🐈', '🐆', '🐈‍⬛'];
+
+        function initGame() {
+            score = 0;
+            player.y = canvas.height - 100;
+            player.vy = 0;
+            player.icon = characters[Math.floor(Math.random() * 3)];
+            platforms = [];
+            
+            platforms.push({
+                x: canvas.width / 2 - 40,
+                y: canvas.height - 50,
+                w: 80,
+                h: 15,
+                vx: 0
+            });
+
+            for (let i = 1; i < platformCount; i++) {
+                addPlatform(canvas.height - (i * 80));
+            }
+        }
+
+        function addPlatform(y) {
+            platforms.push({
+                x: Math.random() * (canvas.width - 70),
+                y: y,
+                w: 70,
+                h: 15,
+                vx: score > 500 ? (Math.random() - 0.5) * 4 : 0
+            });
+        }
+
+        function showGame() {
+            document.getElementById('landing-page').classList.add('hidden');
+            document.getElementById('game-page').classList.remove('hidden');
+            initGame();
+            gameActive = true;
+            requestAnimationFrame(gameLoop);
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            player.x = e.clientX - rect.left;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            player.x = e.touches[0].clientX - rect.left;
+        }, { passive: false });
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            player.vy += player.gravity;
+            player.y += player.vy;
+
+            if (player.y < canvas.height / 2) {
+                let diff = canvas.height / 2 - player.y;
+                player.y = canvas.height / 2;
+                score += Math.floor(diff);
+                document.getElementById('score-display').innerText = `✨ ${score}`;
+                
+                platforms.forEach(p => {
+                    p.y += diff;
+                });
+            }
+
+            platforms.forEach((p, index) => {
+                p.x += p.vx;
+                if (p.x < 0 || p.x + p.w > canvas.width) p.vx *= -1;
+
+                if (player.vy > 0 && 
+                    player.x > p.x - 20 && player.x < p.x + p.w + 20 &&
+                    player.y + 20 > p.y && player.y + 20 < p.y + p.h) {
+                    player.vy = player.jumpStrength;
+                }
+
+                if (p.y > canvas.height) {
+                    platforms.splice(index, 1);
+                    addPlatform(0);
+                }
+            });
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            platforms.forEach(p => {
+                ctx.beginPath();
+                ctx.roundRect(p.x, p.y, p.w, p.h, 10);
+                ctx.fill();
+            });
+
+            ctx.font = '40px serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(player.icon, player.x, player.y + 10);
+
+            if (score >= targetScore) {
+                gameActive = false;
+                document.getElementById('win-modal').classList.remove('hidden');
+                return;
+            }
+
+            if (player.y > canvas.height + 100) {
+                initGame();
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function backToHome() { location.reload(); }
+
+        function showMessagePage() {
+            document.getElementById('win-modal').classList.add('hidden');
+            document.getElementById('game-page').classList.add('hidden');
+            document.getElementById('message-page').classList.remove('hidden');
+            
+            // Teks yang diperbarui dengan emotikon love
+            const fullText = "Haloo mumudd!! 💐✨🌻\n\nTerimakasihh sudaah menyempatkan buat main game jumper tadii, hebat bangett bisa sampe atas! 🍰🍭\n\nSelamat hari valentine. Terimakasih udaah jadi sosok yang selalu menginspirasi dengan caramu sendiri. 🌟 Kamuu kerenn taww, andd i hope you know kalau aku selalu menghargaii waktu yang kita luangkann bersama. 🥐🍓\n\nI hope you know that i'm always here for you, i always proud of youu whaterver you are!! 💖💖💖\n\nI love youu to the moon and back, ahaha! 🌙✨🎈\n\n- Salam cintaa dari babuu molii 🐈🐾";
+            const container = document.getElementById('typing-container');
+            let i = 0;
+
+            function typeWriter() {
+                if (i < fullText.length) {
+                    container.innerHTML += fullText.charAt(i) === "\n" ? "<br>" : fullText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 40);
+                }
+            }
+            container.innerHTML = "";
+            typeWriter();
+        }
+    </script>
+</body>
+</html>
